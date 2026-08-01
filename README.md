@@ -8,7 +8,6 @@ Each project is self-contained: its own STM32CubeIDE project (`.project`/`.cproj
 
 - **Board:** ST Nucleo-F446RE (STM32F446RETx, Cortex-M4)
 - **IDE:** STM32CubeIDE (GCC / make toolchain — not Keil/IAR)
-- Datasheets and the board schematic are in [`Document/`](Document)
 
 ## Projects
 
@@ -27,9 +26,7 @@ STM32_F446RE/
 ├── 1_Blink_LED/                 - project 1 (see table above)
 ├── 2_Button/                    - project 2
 ├── 3_1_Button_Interupt/         - project 3.1
-├── 3_2_Button_Interrupt/        - project 3.2
-├── Document/                    - datasheets, schematic, user manual (reference PDFs)
-└── Dev_IOT/                     - older reference code (STM32F103-based), kept for comparison only
+└── 3_2_Button_Interrupt/        - project 3.2
 
 # each numbered project folder follows the same internal layout:
 <project>/
