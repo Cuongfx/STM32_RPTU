@@ -40,14 +40,3 @@ STM32_F446RE/
 ├── README.md                    - what this project teaches, pin mapping, wiring diagram
 └── wiring_diagram.svg           - how to physically wire the breadboard for this project
 ```
-
-## Wiring conventions used throughout
-
-Two pins are reused across the button projects, both on the Arduino-style header (CN5/CN6/CN8/CN9):
-
-| Signal | Pin | Header label |
-|---|---|---|
-| Button | PC0 | A5 |
-| External LED (`LEDY`) | PC1 | A4 |
-
-The button connects to GND on one leg — no external resistor needed, the internal pull-up is enabled in software. The LED connects through a ~330Ω series resistor to GND. See each project's own `wiring_diagram.svg` for the exact circuit used in that project.
