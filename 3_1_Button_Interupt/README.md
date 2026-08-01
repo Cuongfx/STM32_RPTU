@@ -17,7 +17,7 @@ One thing does **not** change with interrupts: mechanical bounce still happens, 
 
 ## Architecture
 
-![Full pipeline: interrupt, debounce, then the click/hold tree](button_interupt.png)
+![Full pipeline: interrupt, debounce, then the click/hold tree](button_pipeline_diagram.svg)
 
 ```
 EXTI0_IRQHandler (hardware vector)

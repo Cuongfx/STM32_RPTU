@@ -24,7 +24,7 @@ See [2_Button](../2_Button) for the polling version of this exact same problem. 
 
 ## Logic
 
-![Full pipeline: interrupt, debounce, then the click/hold tree](button_interupt.png)
+![Full pipeline: interrupt, debounce, then the click/hold tree](button_pipeline_diagram.svg)
 
 `HAL_GPIO_EXTI_Callback()` does the minimum possible (`pin_changed = 1`); everything else — debounce, click counting, hold detection, LED reaction — runs in `Button_Handle()` / `LED_Handle()` inside the main loop, using the same "record a timestamp, keep checking elapsed time" pattern used throughout this repository.
 
