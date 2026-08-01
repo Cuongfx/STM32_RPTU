@@ -35,6 +35,16 @@ EXTI_Dispatcher_Register(Button_Pin, Button_EXTI_Callback);
 ```
 Adding a second interrupt source later means writing its own `lib/<module>.c` with a matching callback and adding one more `EXTI_Dispatcher_Register(...)` line — `HAL_GPIO_EXTI_Callback()` in `main.c` never needs to change.
 
+## CubeMX setup & code generation
+
+1. `File → New → STM32 Project` → Board Selector → **NUCLEO-F446RE** → Next → finish the wizard.
+2. Click pin **PC0** → set it to `GPIO_EXTI0` (interrupt on that line). In the parameter panel: **GPIO Pull-up/Pull-down** = `Pull-up`, **User Label** = `Button`, **GPIO Mode** = `External Interrupt Mode with Rising/Falling edge trigger detection` (both edges — a long-press needs the *release* edge too, not just the press).
+3. Click pin **PC1** → set it to `GPIO_Output`. **User Label** = `LEDY`.
+4. **System Core → NVIC** tab → confirm **EXTI line0 interrupt** is enabled (ticking `GPIO_EXTI0` on a pin enables this automatically).
+5. **Project Manager → Project** → Toolchain / IDE = `STM32CubeIDE`.
+6. **Project Manager → Code Generator** → **`Copy only the necessary library files`**.
+7. **GENERATE CODE**.
+
 ## Pin mapping
 
 | Signal | Pin | Notes |

@@ -17,6 +17,7 @@ Each project is self-contained: its own STM32CubeIDE project (`.project`/`.cproj
 | 2 | [2_Button](2_Button) | Polling a button: mechanical debounce, single click, double click, long-press — all as a non-blocking state machine |
 | 3.1 | [3_1_Button_Interupt](3_1_Button_Interupt) | Same button logic, but edge-detected via **EXTI interrupt**, restructured into a modular `lib/` with a reusable interrupt dispatcher (for when more than one interrupt source is needed) |
 | 3.2 | [3_2_Button_Interrupt](3_2_Button_Interrupt) | Same interrupt-driven button logic, built **step by step in a single file** — the recommended path for walking a student through the reasoning, stage by stage, before showing them the modular version in 3.1 |
+| 5.1 | [5_1_ADC_LED](5_1_ADC_LED) | True single-channel ADC (not the sequential-polling trick some sample code uses) read from a potentiometer, driving an LED's brightness through timer PWM |
 
 ## Folder structure (general)
 

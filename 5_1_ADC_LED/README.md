@@ -5,9 +5,18 @@
 
 ## What this project is about
 
-A 10kΩ potentiometer is read on a single ADC channel, and its value directly controls the brightness of an LED through PWM — vặn biến trở, LED sáng/mờ theo thời gian thực. This is the first project in the repository combining two peripherals: **ADC** (reading an analog voltage) and **timer PWM** (generating an analog-like output).
+A 10kΩ potentiometer is read on a single ADC channel, and its value directly controls the brightness of an LED through PWM — turn the knob, the LED dims or brightens in real time. This is the first project in the repository combining two peripherals: **ADC** (reading an analog voltage) and **timer PWM** (generating an analog-like output).
 
-This project was built from a real sample project found for the STM32F103 ("ADC Single + Multi"), but that sample's "multi-channel" technique was actually a **sequential polling trick**: it called a single-channel read function twice per loop with two different channel numbers, reconfiguring the ADC each time. That is not true hardware scan mode (which needs `ADC_SCAN_ENABLE` + DMA so the ADC hardware cycles channels on its own). This project instead builds true **single-channel ADC** from scratch on the F446RE, laid as the foundation before a future multi-channel version.
+## CubeMX setup & code generation
+
+1. `File → New → STM32 Project` → Board Selector → **NUCLEO-F446RE** → Next → finish the wizard.
+2. Click pin **PA0** → set it to `ADC1_IN0`.
+3. **Analog → ADC1** tab: tick only `IN0` (single channel, no Scan Mode). Parameter Settings: **Resolution** = `12-bit`, **Data Alignment** = `Right Alignment`, **Continuous Conversion Mode** = `Disabled`, **Sampling Time** (channel 0) = `56 Cycles`.
+4. Click pin **PA1** → set it to `TIM2_CH2`.
+5. **Timers → TIM2** tab → **Channel2** = `PWM Generation CH2`. Parameter Settings: **Prescaler** = `89`, **Counter Period (ARR)** = `999`, **Pulse** = `0`.
+6. **Project Manager → Project** → Toolchain / IDE = `STM32CubeIDE` (generating with the wrong toolchain, e.g. EWARM/IAR, produces a project STM32CubeIDE's Import wizard can't see — no `.project`/`.cproject`).
+7. **Project Manager → Code Generator** → **`Copy only the necessary library files`** (not "Copy all used libraries files" — that pulls in unrelated CMSIS submodules like RTOS2/NN/DSP that fail to compile since their supporting middleware isn't generated).
+8. **GENERATE CODE**.
 
 ## How the ADC read works
 

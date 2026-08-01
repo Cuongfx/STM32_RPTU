@@ -33,6 +33,15 @@ This "record a timestamp, then keep checking elapsed time on every loop" pattern
 
 LD2 needs no wiring at all — it is already connected to PA5 on the board. Only `LEDY` needs an external circuit: PA1 → resistor (≈330Ω) → LED anode, LED cathode → GND.
 
+## CubeMX setup & code generation
+
+1. `File → New → STM32 Project` → Board Selector → search **NUCLEO-F446RE** → select it → Next → finish the wizard (accepts the board's default clock/pin initialization).
+2. In the **Pinout & Configuration** view, click pin **PA1** on the chip diagram → set it to `GPIO_Output`. In the pin's parameter panel (bottom), set **User Label** to `LEDY`.
+3. `PA5` is already `GPIO_Output` labeled `LD2` automatically, since the board selector recognizes it as the Nucleo's onboard user LED — nothing to change there.
+4. **Project Manager** tab → **Project** → confirm **Toolchain / IDE** is set to `STM32CubeIDE`.
+5. **Project Manager → Code Generator** → select **`Copy only the necessary library files`** (not "Copy all used libraries files" — the latter pulls in unrelated CMSIS submodules that fail to compile).
+6. Click **GENERATE CODE** (top-right). CubeIDE opens/imports the project automatically if it's already running.
+
 ## What to look at in the code
 
 `Core/Src/main.c` — `MX_GPIO_Init()` configures both pins as `GPIO_MODE_OUTPUT_PP`; the two independent timers live in the `while(1)` loop.

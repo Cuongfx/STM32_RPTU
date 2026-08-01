@@ -41,6 +41,15 @@ The classification logic on top of the debounced signal:
 
 The button needs no external resistor — `GPIO_PULLUP` is enabled in software (`MX_GPIO_Init()`), so one leg of the button goes straight to PC0 and the other to GND.
 
+## CubeMX setup & code generation
+
+1. `File → New → STM32 Project` → Board Selector → **NUCLEO-F446RE** → Next → finish the wizard.
+2. Click pin **PC0** → set it to `GPIO_Input`. In the parameter panel: **GPIO Pull-up/Pull-down** = `Pull-up`, **User Label** = `Button`.
+3. Click pin **PC1** → set it to `GPIO_Output`. **User Label** = `LEDY`.
+4. **Project Manager → Project** → Toolchain / IDE = `STM32CubeIDE`.
+5. **Project Manager → Code Generator** → **`Copy only the necessary library files`**.
+6. **GENERATE CODE**.
+
 ## Folder structure
 
 ```

@@ -28,6 +28,16 @@ See [2_Button](../2_Button) for the polling version of this exact same problem. 
 
 `HAL_GPIO_EXTI_Callback()` does the minimum possible (`pin_changed = 1`); everything else — debounce, click counting, hold detection, LED reaction — runs in `Button_Handle()` / `LED_Handle()` inside the main loop, using the same "record a timestamp, keep checking elapsed time" pattern used throughout this repository.
 
+## CubeMX setup & code generation
+
+1. `File → New → STM32 Project` → Board Selector → **NUCLEO-F446RE** → Next → finish the wizard.
+2. Click pin **PC0** → set it to `GPIO_EXTI0`. In the parameter panel: **GPIO Pull-up/Pull-down** = `Pull-up`, **User Label** = `Button`, **GPIO Mode** = `External Interrupt Mode with Rising/Falling edge trigger detection`.
+3. Click pin **PC1** → set it to `GPIO_Output`. **User Label** = `LEDY`.
+4. **System Core → NVIC** tab → confirm **EXTI line0 interrupt** is enabled.
+5. **Project Manager → Project** → Toolchain / IDE = `STM32CubeIDE`.
+6. **Project Manager → Code Generator** → **`Copy only the necessary library files`**.
+7. **GENERATE CODE**.
+
 ## Pin mapping
 
 | Signal | Pin | Notes |
