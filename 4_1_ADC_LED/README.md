@@ -1,4 +1,4 @@
-# 5.1 — ADC Single Channel + PWM LED (potentiometer → brightness)
+# 4.1 — ADC Single Channel + PWM LED (potentiometer → brightness)
 
 **Board:** Nucleo-F446RE (STM32F446RETx)
 **IDE:** STM32CubeIDE (GCC / make)
@@ -71,8 +71,8 @@ __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, duty);    // writes TIM2->CCR2 dire
 ## Folder structure
 
 ```
-5_1_ADC_LED/
+4_1_ADC_LED/
 ├── Core/Src/main.c   - MX_ADC1_Init, MX_TIM2_Init, while(1) loop reading ADC and writing PWM compare
-├── 5_1_ADC_LED.ioc    - CubeMX project (ADC1 IN0 single channel, TIM2 CH2 PWM, Toolchain: STM32CubeIDE)
+├── 4_1_ADC_LED.ioc    - CubeMX project (ADC1 IN0 single channel, TIM2 CH2 PWM, Toolchain: STM32CubeIDE)
 └── wiring_diagram.svg
 ```
