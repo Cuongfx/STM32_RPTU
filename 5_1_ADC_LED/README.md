@@ -60,20 +60,13 @@ __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, duty);    // writes TIM2->CCR2 dire
 - Potentiometer (10kΩ linear, marked **B103**): outer pins to `3V3` and `GND` (either way round works — reversing them just flips which direction feels like "increase"), wiper (middle pin) to `PA0`.
 - LEDY: `PA1` → resistor (~330Ω) → LED anode, LED cathode → `GND`.
 
-## Debugging without UART: Live Expressions
+## Debugging with Live Expressions
 
-`printf`-over-UART was tried and then removed to keep the project scoped to ADC+PWM only. Instead, `adc_raw` is inspected live during a debug session using CubeIDE's **Live Expressions** view, which polls a global/static variable's value over SWD while the target keeps running (no breakpoint needed):
+`adc_raw` (and `duty`) are inspected live during a debug session using CubeIDE's **Live Expressions** view, which polls a global/static variable's value over SWD while the target keeps running (no breakpoint needed):
 
 1. Start a debug session, open `Window → Show View → Live Expressions`.
 2. Add `adc_raw` (and `duty`) as an expression.
 3. Toggle **Enable Live Watch** on the view's toolbar, then **Resume** the target.
-
-## Mistakes made while building this (worth knowing about)
-
-- **CubeMX generated for the wrong toolchain (EWARM/IAR)** the first time — STM32CubeIDE's Import wizard can't see a project without `.project`/`.cproject`. Fix: `Project Manager → Toolchain/IDE` must be set to `STM32CubeIDE` before generating.
-- **`Copy all used libraries files`** (a Code Generator option in CubeMX) pulled in unrelated CMSIS submodules — `RTOS2`, `NN`, `DSP`, `Core/Template/ARMv8-M` — none of which are needed for a plain HAL project on a Cortex-M4, and each failed to compile (missing headers like `RTE_Components.h`, `dsp/transform_functions.h`) because their supporting middleware wasn't generated. Fix: switch to **`Copy only the necessary library files`**, regenerate, and delete the stray folders under `Drivers/CMSIS/` left behind from the earlier generation.
-- **LED wired to the wrong header pin** — A4 (PC1) instead of A1 (PA1), the pin actually configured as `TIM2_CH2`. Always double check the Arduino header label against the real chip pin (A0=PA0, A1=PA1, A2=PA4, A3=PB0, A4=PC1, A5=PC0 — they are not in chip-pin order).
-- **Potentiometer GND miswired** — reading stuck at a constant 4095 regardless of wiper position turned out to be a wrong GND connection on the potentiometer, not a code or ADC configuration bug. When a reading looks "stuck," isolate the ADC pin by touching it directly to GND and to 3V3 before suspecting the code.
 
 ## Folder structure
 

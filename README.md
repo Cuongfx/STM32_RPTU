@@ -27,7 +27,8 @@ STM32_F446RE/
 ├── 1_Blink_LED/                 - project 1 (see table above)
 ├── 2_Button/                    - project 2
 ├── 3_1_Button_Interupt/         - project 3.1
-└── 3_2_Button_Interrupt/        - project 3.2
+├── 3_2_Button_Interrupt/        - project 3.2
+└── 5_1_ADC_LED/                 - project 5.1
 
 # each numbered project folder follows the same internal layout:
 <project>/
