@@ -21,7 +21,7 @@ The fix is a **non-blocking debounce filter**: every time the raw pin reading ch
 
 ## State machine
 
-![Button decision tree with variables](Button.png)
+![Button decision tree with variables](button_decision_tree.svg)
 
 The classification logic on top of the debounced signal:
 - On press, `time_press_start` is recorded.
