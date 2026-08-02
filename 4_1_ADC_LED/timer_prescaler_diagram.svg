@@ -1,0 +1,68 @@
+<svg width="1000" height="430" viewBox="0 0 1000 430" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>How Prescaler (PSC) and Counter Period (ARR) turn the timer input clock into a 1kHz PWM signal</title>
+<desc>The CNT counter register increments by 1 every counter tick period, where the counter tick period is 1 divided by the counter clock frequency, and the counter clock frequency is the timer input clock divided by (Prescaler+1). With Prescaler (PSC) = 89 and a timer input clock of 90MHz, each tick is 1 microsecond. CNT counts from 0 up to Counter Period (ARR) = 999, then rolls over to 0 and generates an Update event. One full cycle takes the counter tick period times (Counter Period+1), which works out to 1 millisecond, i.e. a 1kHz PWM frequency.</desc>
+<rect width="1000" height="430" fill="#ffffff"/>
+
+<!-- Y axis -->
+<line x1="60" y1="70" x2="60" y2="300" stroke="#1a1a1a" stroke-width="2"/>
+<text x="35" y="80" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#1a1a1a">999</text>
+<text x="35" y="94" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#555555">(Counter</text>
+<text x="35" y="106" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#555555">Period)</text>
+<text x="35" y="290" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#1a1a1a">0</text>
+<text x="18" y="190" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#1a1a1a" transform="rotate(-90 18 190)">CNT (counter register)</text>
+
+<!-- X axis -->
+<line x1="60" y1="280" x2="560" y2="280" stroke="#1a1a1a" stroke-width="2"/>
+
+<!-- staircase: first few ticks -->
+<path d="M80,280 H130 V260 H180 V240 H230 V220 H280"
+      fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+
+<text x="330" y="230" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#555555">⋯</text>
+<text x="330" y="250" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#555555">(996 identical ticks)</text>
+
+<!-- staircase: last few ticks up to Counter Period, then Update event resets to 0 -->
+<path d="M380,120 H430 V100 H480 V80 H530"
+      fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+<line x1="530" y1="80" x2="530" y2="280" stroke="#1a1a1a" stroke-width="2.5"/>
+<text x="538" y="76" font-family="sans-serif" font-size="10" fill="#555555">Update event</text>
+<path d="M530,280 H555" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-dasharray="4 4"/>
+<text x="565" y="284" font-family="sans-serif" font-size="12" fill="#555555">repeats ⟳</text>
+
+<!-- single-tick callout -->
+<line x1="80" y1="300" x2="130" y2="300" stroke="#2f6fed" stroke-width="2"/>
+<line x1="80" y1="294" x2="80" y2="306" stroke="#2f6fed" stroke-width="2"/>
+<line x1="130" y1="294" x2="130" y2="306" stroke="#2f6fed" stroke-width="2"/>
+<text x="105" y="320" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#2f6fed">Counter tick period</text>
+<text x="105" y="336" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#2f6fed">= 1 / Counter clock</text>
+<text x="105" y="350" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#2f6fed">= 1 µs per tick</text>
+<text x="105" y="364" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#2f6fed">(i.e. Counter clock = 1MHz)</text>
+
+<!-- full period callout -->
+<line x1="80" y1="384" x2="530" y2="384" stroke="#1a1a1a" stroke-width="2"/>
+<line x1="80" y1="378" x2="80" y2="390" stroke="#1a1a1a" stroke-width="2"/>
+<line x1="530" y1="378" x2="530" y2="390" stroke="#1a1a1a" stroke-width="2"/>
+<text x="305" y="408" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1a1a1a">Update event period = Counter tick period × (ARR+1) = 1 ms  →  PWM frequency = 1 kHz</text>
+
+<!-- CubeMX parameter recap box -->
+<rect x="620" y="60" width="330" height="300" rx="10" fill="#f5f5f2" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="640" y="88" font-family="sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">TIM2 Parameter Settings (CubeMX)</text>
+
+<text x="640" y="112" font-family="monospace" font-size="12.5" fill="#1a1a1a">Prescaler (PSC) = 89</text>
+<text x="640" y="130" font-family="monospace" font-size="12.5" fill="#1a1a1a">Counter Mode = Up</text>
+<text x="640" y="148" font-family="monospace" font-size="12.5" fill="#1a1a1a">Counter Period (ARR) = 999</text>
+<text x="640" y="166" font-family="monospace" font-size="12.5" fill="#1a1a1a">Timer input clock = 90 MHz</text>
+
+<line x1="640" y1="182" x2="920" y2="182" stroke="#cccccc" stroke-width="1"/>
+
+<text x="640" y="206" font-family="sans-serif" font-size="12" fill="#555555">Step 1 — counter clock frequency:</text>
+<text x="640" y="224" font-family="monospace" font-size="12" fill="#1a1a1a">Counter clock = Timer input clock / (PSC+1)</text>
+<text x="640" y="240" font-family="monospace" font-size="12" fill="#1a1a1a">              = 90MHz / 90 = 1MHz</text>
+
+<text x="640" y="264" font-family="sans-serif" font-size="12" fill="#555555">Step 2 — counter tick period:</text>
+<text x="640" y="282" font-family="monospace" font-size="12" fill="#1a1a1a">Tick period = 1 / Counter clock = 1 µs</text>
+
+<text x="640" y="306" font-family="sans-serif" font-size="12" fill="#555555">Step 3 — Update event period:</text>
+<text x="640" y="324" font-family="monospace" font-size="12" fill="#1a1a1a">UEV period = Tick period × (ARR+1) = 1ms</text>
+<text x="640" y="340" font-family="monospace" font-size="12" fill="#1a1a1a">PWM frequency = 1 / UEV period = 1kHz</text>
+</svg>
