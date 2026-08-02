@@ -1,0 +1,102 @@
+<svg viewBox="0 0 1160 700" xmlns="http://www.w3.org/2000/svg" role="img" font-family="sans-serif">
+<title>Multi-channel ADC scan mode with DMA, hardware loop vs CPU loop</title>
+<desc>Left column shows the ADC hardware sequencer and DMA running forever in the background, cycling through channel 0 then channel 1 and writing results into a memory buffer. Right column shows the CPU main loop independently reading that buffer at any time to update PWM duty cycles, without ever blocking on the ADC.</desc>
+<rect width="1160" height="700" fill="#ffffff"/>
+
+<style>
+  .box { fill: #f5f5f2; stroke: #1a1a1a; stroke-width: 1.5; }
+  .box-accent { fill: #f5f5f2; stroke: #2f6fed; stroke-width: 2; }
+  .lbl { fill: #1a1a1a; font-size: 14px; font-weight: 600; font-family: monospace; }
+  .sub { fill: #555555; font-size: 12.5px; }
+  .tag { fill: #8a8a8a; font-size: 11.5px; font-weight: 700; letter-spacing: 0.03em; }
+  .arrow { stroke: #555555; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+  .arrow-loop { stroke: #2f6fed; stroke-width: 2; fill: none; marker-end: url(#arrowAccent); }
+  .arrow-dash { stroke: #8a8a8a; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; marker-end: url(#arrowMuted); }
+  .colhead { fill: #1a1a1a; font-size: 16px; font-weight: 700; }
+  .divider { stroke: #cccccc; stroke-width: 1; }
+  .kp { fill: #555555; font-size: 14.5px; }
+</style>
+
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#555555"/>
+  </marker>
+  <marker id="arrowAccent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#2f6fed"/>
+  </marker>
+  <marker id="arrowMuted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8a8a8a"/>
+  </marker>
+</defs>
+
+<text x="295" y="34" text-anchor="middle" class="colhead">HARDWARE — runs forever, in the background</text>
+<text x="865" y="34" text-anchor="middle" class="colhead">CPU — main loop</text>
+
+<line x1="580" y1="55" x2="580" y2="530" class="divider" stroke-dasharray="3 5"/>
+
+<!-- Left column -->
+<rect x="80" y="60" width="430" height="52" rx="10" class="box-accent"/>
+<text x="100" y="80" class="tag">STEP 1 · CPU, ONCE ONLY</text>
+<text x="100" y="101" class="lbl">HAL_ADC_Start_DMA(&amp;hadc1, adc_buf, 2)</text>
+
+<path d="M295,112 V138" class="arrow"/>
+
+<rect x="80" y="140" width="430" height="52" rx="10" class="box"/>
+<text x="100" y="160" class="tag">STEP 2 · SEQUENCER (RANK 1)</text>
+<text x="100" y="181" class="lbl">ADC samples channel IN0 (pot)</text>
+
+<path d="M295,192 V218" class="arrow"/>
+
+<rect x="80" y="220" width="430" height="52" rx="10" class="box"/>
+<text x="100" y="240" class="tag">STEP 3 · EOC → DMA</text>
+<text x="100" y="261" class="lbl">DMA copies DR → adc_buf[0]</text>
+
+<path d="M295,272 V298" class="arrow"/>
+
+<rect x="80" y="300" width="430" height="52" rx="10" class="box"/>
+<text x="100" y="320" class="tag">STEP 4 · SEQUENCER (RANK 2, AUTOMATIC)</text>
+<text x="100" y="341" class="lbl">ADC samples channel IN1 (LDR)</text>
+
+<path d="M295,352 V378" class="arrow"/>
+
+<rect x="80" y="380" width="430" height="52" rx="10" class="box"/>
+<text x="100" y="400" class="tag">STEP 5 · EOC → DMA</text>
+<text x="100" y="421" class="lbl">DMA copies DR → adc_buf[1]</text>
+
+<path d="M80,406 C30,406 30,166 80,166" class="arrow-loop"/>
+<text x="34" y="286" class="sub" transform="rotate(-90 34 286)" text-anchor="middle">Continuous + Circular → repeats forever</text>
+
+<rect x="80" y="450" width="430" height="60" rx="10" fill="none" stroke="#cccccc" stroke-dasharray="3 4"/>
+<text x="100" y="474" class="sub">None of the steps above need the CPU to re-trigger.</text>
+<text x="100" y="494" class="sub">The whole loop above runs purely in hardware.</text>
+
+<!-- Right column -->
+<rect x="650" y="140" width="430" height="52" rx="10" class="box-accent"/>
+<text x="670" y="160" class="tag">CPU, RUNS CONTINUOUSLY</text>
+<text x="670" y="181" class="lbl">while (1) { ... }</text>
+
+<path d="M865,192 V218" class="arrow"/>
+
+<rect x="650" y="220" width="430" height="52" rx="10" class="box"/>
+<text x="670" y="240" class="tag">READ BUFFER, ANY TIME</text>
+<text x="670" y="261" class="lbl">duty1 = adc_buf[0] * 999 / 4095</text>
+
+<path d="M865,272 V298" class="arrow"/>
+
+<rect x="650" y="300" width="430" height="52" rx="10" class="box"/>
+<text x="670" y="320" class="tag">WRITE PWM</text>
+<text x="670" y="341" class="lbl">__HAL_TIM_SET_COMPARE(...)</text>
+
+<path d="M650,326 C605,326 605,166 650,166" class="arrow-loop"/>
+
+<path d="M510,246 C580,246 580,246 648,246" class="arrow-dash"/>
+<path d="M510,406 C595,406 595,246 648,246" class="arrow-dash"/>
+<text x="580" y="236" class="sub" text-anchor="middle">buf[] always ready</text>
+
+<!-- Key point -->
+<rect x="80" y="560" width="1000" height="120" rx="12" fill="#f5f5f2" stroke="#cccccc"/>
+<text x="104" y="588" class="lbl" font-size="15" font-family="sans-serif">Key point</text>
+<text x="104" y="614" class="kp">The left column (ADC hardware + DMA) and the right column (CPU) run fully in parallel and never wait on each other.</text>
+<text x="104" y="638" class="kp">The CPU never calls Start again, never Polls, never Stops the ADC — it just reads adc_buf[] on every while(1) pass,</text>
+<text x="104" y="662" class="kp">always getting the latest sample that DMA already dropped into the buffer in the background.</text>
+</svg>
