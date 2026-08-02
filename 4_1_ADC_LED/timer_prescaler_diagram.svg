@@ -16,17 +16,17 @@
 
 <!-- staircase: first few ticks -->
 <path d="M80,280 H130 V260 H180 V240 H230 V220 H280"
-      fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+      fill="none" stroke="#16a34a" stroke-width="2.5"/>
 
 <text x="330" y="230" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#555555">⋯</text>
 <text x="330" y="250" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#555555">(996 identical ticks)</text>
 
 <!-- staircase: last few ticks up to Counter Period, then Update event resets to 0 -->
 <path d="M380,120 H430 V100 H480 V80 H530"
-      fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
-<line x1="530" y1="80" x2="530" y2="280" stroke="#1a1a1a" stroke-width="2.5"/>
+      fill="none" stroke="#16a34a" stroke-width="2.5"/>
+<line x1="530" y1="80" x2="530" y2="280" stroke="#16a34a" stroke-width="2.5"/>
 <text x="538" y="76" font-family="sans-serif" font-size="10" fill="#555555">Update event</text>
-<path d="M530,280 H555" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-dasharray="4 4"/>
+<path d="M530,280 H555" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-dasharray="4 4"/>
 <text x="565" y="284" font-family="sans-serif" font-size="12" fill="#555555">repeats ⟳</text>
 
 <!-- single-tick callout -->
