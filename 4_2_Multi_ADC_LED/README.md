@@ -144,13 +144,6 @@ Same approach as [4_1_ADC_LED](../4_1_ADC_LED): add `adc_buf`, `duty1`, `duty2` 
 
 If Live Expressions doesn't seem to auto-refresh while running, the reliable fallback is manual: change the input, **Suspend**, read the value, **Resume**, repeat. That always reflects the true value at the moment of suspend, regardless of whether the view's background polling is working.
 
-## Mistakes made while building this (worth knowing about)
-
-- **`DMA Continuous Requests` left `Disabled`** — the buffer updated exactly once at startup and then froze, even though Live Expressions and the debug session were otherwise working fine. Easy to mistake for a wiring or debugger problem; it was a single CubeMX checkbox.
-- **TIM3 `Counter Period (ARR)` left at CubeMX's default `65535`** instead of `999` — produced a ~15Hz PWM signal, which is slow enough to see as visible flickering rather than smooth brightness.
-- **Potentiometer wired to 5V instead of 3V3** — the STM32's ADC input range is bounded by `VDDA` (3.3V on this board), not 5V. Feeding 5V in risks clipping/inaccurate readings at the top of the range and, depending on the source impedance, stresses the pin's internal ESD protection diodes. Always use `3V3`, not `5V`, for anything feeding directly into an ADC pin on this board.
-- **Leftover CMSIS submodules from "Copy all used libraries files"** — same failure mode as in 4.1, just different folders pulled in this time (`CMSIS/DAP`, `CMSIS/Core_A`, `CMSIS/Core/Template/ARMv8-M`). Fix is the same: regenerate with `Copy only the necessary library files` and delete the stray folders left behind from the earlier generation.
-
 ## Folder structure
 
 ```
